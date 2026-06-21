@@ -1,56 +1,113 @@
-// عند الضغط على Enter يتم التقاط قيمة الـ input والتأكد إنها مش فاضية قبل إضافة Todo جديد
-const inputButtonAddToDo = document.querySelector("#todo-input");
+// =====================
+// 1. البيانات الأساسية (Source of truth)
+// =====================
+let tasks = [];
 
-inputButtonAddToDo.addEventListener("keydown", (event) => {
+const input = document.querySelector("#todo-input");
+const todosContainer = document.querySelector(".todo-list");
+
+
+// =====================
+// 2. إضافة Todo (بيانات فقط بدون DOM)
+// =====================
+const addTasks = (text) => {
+  tasks.push({ text, completed: false });
+
+  // بعد الإضافة نعيد الرسم
+  renderTasks();
+};
+
+
+// =====================
+// 3. إدخال من الكيبورد (Enter)
+// =====================
+input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    let userInput = inputButtonAddToDo.value;
+    let value = input.value;
 
-    if (userInput.trim() === "") {
-      return;
-    }
+    if (value.trim() === "") return;
 
-    addTasks(userInput);
-
-    inputButtonAddToDo.value = "";
+    addTasks(value);
+    input.value = "";
   }
 });
 
 
-// تجهيز مكان تخزين المهام
-let tasks = [];
+// =====================
+// 4. عرض المهام (Render / UI فقط)
+// =====================
+function renderTasks(filter = "all") {
 
-const todosContainer = document.querySelector(".todo-list");
+  // نمسح الشاشة قبل إعادة الرسم
+  todosContainer.innerHTML = "";
 
-// إضافة مهمة جديدة + عرضها
-const addTasks = (task) => {
-  tasks.push({text:task,completed:false});
+  // نمشي على كل المهام
+  tasks.forEach((task, index) => {
 
-  let newtask = document.createElement("div");
-  newtask.classList.add("todo-item");
+    // فلترة Active (غير مكتمل)
+    if (filter === "active" && task.completed) return;
 
-  let checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  //لو checkbox متعلم عليه عند الضغط يشيل العلامه والعكس 
-  checkbox.addEventListener("change",()=>{
-   newtask.classList.toggle("completed")
+    // فلترة Completed (مكتمل فقط)
+    if (filter === "completed" && !task.completed) return;
+
+    // =====================
+    // إنشاء عنصر Todo
+    // =====================
+    let todoItem = document.createElement("div");
+    todoItem.classList.add("todo-item");
+
+
+
+////////////////
+let checkbox = document.createElement("input");
+checkbox.type = "checkbox";
+checkbox.checked = task.completed;
+
+checkbox.addEventListener("change", () => {
+  task.completed = checkbox.checked;
+  renderTasks(filter);
+});
+
+    // نص المهمة
+    let label = document.createElement("label");
+    label.textContent = task.text;
+if (task.completed) {
+  todoItem.classList.add("completed");
+}
+    // زر الحذف
+    let deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "x";
+
+    // حذف المهمة من array
+    deleteBtn.addEventListener("click", () => {
+      tasks.splice(index, 1);
+      renderTasks(filter);
+    });
+
+    // تجميع العناصر
+    todoItem.append(checkbox, label, deleteBtn);
+
+    // إضافة للصفحة
+    todosContainer.append(todoItem);
   });
-
-  let label = document.createElement("label");
-  label.textContent = task;
-//الزر المسؤل عن حذف المهمه
-  let deleteButton = document.createElement("button");
-  deleteButton.textContent = "x";
+}
 
 
+// =====================
+// 5. أزرار الفلاتر
+// =====================
 
-  newtask.append(checkbox);
-  newtask.append(label);
-  newtask.append(deleteButton);
+// عرض الكل
+document.getElementById("all-items").addEventListener("click", () => {
+  renderTasks("all");
+});
 
-  todosContainer.append(newtask);
-//حذف المهمه
-  deleteButton.addEventListener("click", () => {
-    newtask.remove();
-  });
-};
+// المهام غير المكتملة
+document.getElementById("active-items").addEventListener("click", () => {
+  renderTasks("active");
+});
 
+// المهام المكتملة
+document.getElementById("completed-items").addEventListener("click", () => {
+  renderTasks("completed");
+});
