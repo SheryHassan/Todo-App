@@ -1,0 +1,119 @@
+/*    Css Reset    */
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+#menu-toggle {
+  display: none;
+}
+
+a {
+  color: inherit;
+  display: inline-block;
+}
+
+button {
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 1.6rem;
+  font-family: "Rubik", sans-serif;
+  background-color: rgb(250, 250, 253);
+  font-weight: var(--font-weight-regular);
+}
+
+/*-----------End  Css Reset---------*/
+
+h1 {
+  color: white;
+  letter-spacing: 1rem;
+}
+
+
+header {
+  background-image: url("assets/images/bg-desktop-light.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 30rem;
+  padding: 3rem 5rem 0;
+}
+.header-content {
+  width: 54rem;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.main-container{
+width: 54rem; 
+margin: -15rem auto 0;
+
+}
+/*////////////*/
+.add-todo {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+
+.todo-item {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+
+  padding: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 2rem;
+}
+
+.todo-item label {
+  font-size: 1.6rem;
+  color: #333;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.todo-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.todo-item button {
+  cursor: pointer;
+}
+/*-----------------------------------------*/
+/* خط ال checkbox*/
+
+
+.completed label{
+  text-decoration: line-through;
+  color: #999;
+}

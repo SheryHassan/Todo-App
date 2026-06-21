@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo app</title>
+    <link rel="icon" href="assets/images/favicon-32x32.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+                    <h1>TODO</h1>
+          <img src="assets/images/icon-moon.svg" alt="Dark Mode">
+                  </div>
+
+
+    </header>
+
+
+    <main>
+<div class="main-container">        
+     <!-- Add Todo Section -->
+        <section class="add-todo">
+            <input id="todo-input" type="text" placeholder="Create a new todo...">
+        </section>
+
+        <!-- Todo List Section -->
+        <section class="todo-list">
+
+            <!-- Todo Item (template) -->
+            <div class="todo-item">
+                <input type="checkbox" id="todo-1">
+                <label for="todo-1">Complete online JavaScript course</label>
+            </div>
+ 
+        </section>
+        <!-- TODO filters Button   -->
+
+        <section class="todo-filters">
+              <button>All</button>
+  <button>Active</button>
+  <button>Completed</button>
+
+
+        </section>
+</div>
+
+    </main>
+
+    <script src="index.js"></script>
+</body>
+</html>
