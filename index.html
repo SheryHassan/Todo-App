@@ -13,46 +13,33 @@
     <header>
         <div class="header-content">
                     <h1>TODO</h1>
-          <img src="assets/images/icon-moon.svg" alt="Dark Mode">
+          <img id="theme-toggle" src="assets/images/icon-moon.svg" alt="Toggle Theme">
                   </div>
 
 
     </header>
 
 
-    <main>
-<div class="main-container">        
-     <!-- Add Todo Section -->
-        <section class="add-todo">
-            <input id="todo-input" type="text" placeholder="Create a new todo...">
-        </section>
+<main>
+  <div class="main-container">
 
-        <!-- Todo List Section -->
-        <section class="todo-list">
+    <!-- Add Todo -->
+    <section class="add-todo dark">
+      <input id="todo-input" type="text" placeholder="Create a new todo...">
+    </section>
 
-            <!-- Todo Item (template) -->
-            <div class="todo-item">
-                <input type="checkbox" id="todo-1">
-                <label for="todo-1">Complete online JavaScript course</label>
-            </div>
- 
-        </section>
-        <!-- TODO filters Button   -->
+    <!-- Todo List -->
+    <ul class="todo-list"></ul>
 
-        <section class="todo-filters">
-  <button id="all-items">All</button>
+    <!-- Filters -->
+    <section class="todo-filters">
+      <button id="all-items">All</button>
+      <button id="active-items">Active</button>
+      <button id="completed-items">Completed</button>
+      <button id="clear-completed">Clear Completed</button>
+    </section>
 
-
-
-  <button id="active-items">Active</button>
-  <button id="completed-items">Completed</button>
-
-
-        </section>
-</div>
-
-    </main>
-
-    <script src="index.js"></script>
+  </div>
+</main>    <script src="index.js"></script>
 </body>
 </html>

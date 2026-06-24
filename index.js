@@ -1,113 +1,181 @@
 // =====================
-// 1. البيانات الأساسية (Source of truth)
+// 1. Global State
 // =====================
-let tasks = [];
+let currentFilter = "all";
+let draggedTaskId = null;
 
 const input = document.querySelector("#todo-input");
 const todosContainer = document.querySelector(".todo-list");
+const themeToggle = document.getElementById("theme-toggle");
 
+let tasks = JSON.parse(localStorage.getItem("myTodoList")) || [];
 
 // =====================
-// 2. إضافة Todo (بيانات فقط بدون DOM)
+// 2. Save to LocalStorage
 // =====================
-const addTasks = (text) => {
-  tasks.push({ text, completed: false });
+function saveTasks() {
+  localStorage.setItem("myTodoList", JSON.stringify(tasks));
+}
 
-  // بعد الإضافة نعيد الرسم
+// =====================
+// 3. Add Task
+// =====================
+function addTask(text) {
+  tasks.push({
+    id: Date.now(),
+    text,
+    completed: false
+  });
+
+  saveTasks();
   renderTasks();
-};
-
+}
 
 // =====================
-// 3. إدخال من الكيبورد (Enter)
+// 4. Input Event
 // =====================
 input.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    let value = input.value;
+  if (event.key !== "Enter") return;
 
-    if (value.trim() === "") return;
+  const value = input.value.trim();
+  if (!value) return;
 
-    addTasks(value);
-    input.value = "";
-  }
+  addTask(value);
+  input.value = "";
 });
 
-
 // =====================
-// 4. عرض المهام (Render / UI فقط)
+// 5. Render Tasks
 // =====================
-function renderTasks(filter = "all") {
-
-  // نمسح الشاشة قبل إعادة الرسم
+function renderTasks() {
   todosContainer.innerHTML = "";
 
-  // نمشي على كل المهام
-  tasks.forEach((task, index) => {
+  const filteredTasks = tasks.filter(task => {
+    if (currentFilter === "active") return !task.completed;
+    if (currentFilter === "completed") return task.completed;
+    return true;
+  });
 
-    // فلترة Active (غير مكتمل)
-    if (filter === "active" && task.completed) return;
-
-    // فلترة Completed (مكتمل فقط)
-    if (filter === "completed" && !task.completed) return;
-
-    // =====================
-    // إنشاء عنصر Todo
-    // =====================
-    let todoItem = document.createElement("div");
+  filteredTasks.forEach(task => {
+    const todoItem = document.createElement("li");
     todoItem.classList.add("todo-item");
 
+    // ⭐ Drag enabled
+    todoItem.draggable = true;
 
-
-////////////////
-let checkbox = document.createElement("input");
-checkbox.type = "checkbox";
-checkbox.checked = task.completed;
-
-checkbox.addEventListener("change", () => {
-  task.completed = checkbox.checked;
-  renderTasks(filter);
-});
-
-    // نص المهمة
-    let label = document.createElement("label");
-    label.textContent = task.text;
-if (task.completed) {
-  todoItem.classList.add("completed");
-}
-    // زر الحذف
-    let deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "x";
-
-    // حذف المهمة من array
-    deleteBtn.addEventListener("click", () => {
-      tasks.splice(index, 1);
-      renderTasks(filter);
+    // dragstart
+    todoItem.addEventListener("dragstart", () => {
+      draggedTaskId = task.id;
     });
 
-    // تجميع العناصر
-    todoItem.append(checkbox, label, deleteBtn);
+    // allow drop
+    todoItem.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
 
-    // إضافة للصفحة
+    // drop → reorder
+    todoItem.addEventListener("drop", () => {
+      const fromIndex = tasks.findIndex(t => t.id === draggedTaskId);
+      const toIndex = tasks.findIndex(t => t.id === task.id);
+
+      const [movedTask] = tasks.splice(fromIndex, 1);
+      tasks.splice(toIndex, 0, movedTask);
+
+      saveTasks();
+      renderTasks();
+    });
+
+    // completed style
+    if (task.completed) {
+      todoItem.classList.add("completed");
+    }
+
+    // checkbox
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+
+    checkbox.addEventListener("change", () => {
+      task.completed = checkbox.checked;
+      saveTasks();
+      renderTasks();
+    });
+
+    // label
+    const label = document.createElement("label");
+    label.textContent = task.text;
+
+    // delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "x";
+
+    deleteBtn.addEventListener("click", () => {
+      tasks = tasks.filter(t => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    // append
+    todoItem.append(checkbox, label, deleteBtn);
     todosContainer.append(todoItem);
   });
 }
 
+// =====================
+// 6. Clear Completed
+// =====================
+function clearCompletedTasks() {
+  tasks = tasks.filter(task => !task.completed);
+  saveTasks();
+  renderTasks();
+}
 
 // =====================
-// 5. أزرار الفلاتر
+// 7. Filters
 // =====================
-
-// عرض الكل
 document.getElementById("all-items").addEventListener("click", () => {
-  renderTasks("all");
+  currentFilter = "all";
+  renderTasks();
 });
 
-// المهام غير المكتملة
 document.getElementById("active-items").addEventListener("click", () => {
-  renderTasks("active");
+  currentFilter = "active";
+  renderTasks();
 });
 
-// المهام المكتملة
 document.getElementById("completed-items").addEventListener("click", () => {
-  renderTasks("completed");
+  currentFilter = "completed";
+  renderTasks();
 });
+
+document
+  .getElementById("clear-completed")
+  .addEventListener("click", clearCompletedTasks);
+
+// =====================
+// 8. Theme
+// =====================
+let isDark = JSON.parse(localStorage.getItem("theme")) || false;
+
+function updateTheme() {
+  document.body.classList.toggle("dark", isDark);
+
+  if (isDark) {
+    themeToggle.src = "assets/images/icon-sun.svg";
+  } else {
+    themeToggle.src = "assets/images/icon-moon.svg";
+  }
+
+  localStorage.setItem("theme", JSON.stringify(isDark));
+}
+
+themeToggle.addEventListener("click", () => {
+  isDark = !isDark;
+  updateTheme();
+});
+
+// =====================
+// Init
+// =====================
+renderTasks();
+updateTheme();

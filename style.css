@@ -1,4 +1,6 @@
-/*    Css Reset    */
+/* =======================
+   Css Reset
+======================= */
 
 * {
   margin: 0;
@@ -11,6 +13,7 @@
 *::after {
   box-sizing: border-box;
 }
+
 #menu-toggle {
   display: none;
 }
@@ -30,9 +33,15 @@ ul,
 ol {
   list-style: none;
 }
+
 html {
   font-size: 62.5%;
 }
+
+/* =======================
+   Global Styles
+======================= */
+
 body {
   font-size: 1.6rem;
   font-family: "Rubik", sans-serif;
@@ -40,13 +49,14 @@ body {
   font-weight: var(--font-weight-regular);
 }
 
-/*-----------End  Css Reset---------*/
-
 h1 {
   color: white;
   letter-spacing: 1rem;
 }
 
+/* =======================
+   Header
+======================= */
 
 header {
   background-image: url("assets/images/bg-desktop-light.jpg");
@@ -56,20 +66,32 @@ header {
   height: 30rem;
   padding: 3rem 5rem 0;
 }
-.header-content {
-  width: 54rem;
-  margin: 0 auto;
 
+body.dark header {
+  background-image: url("assets/images/bg-desktop-dark.jpg");
+}
+
+.header-content {
+  width: 40rem;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
-.main-container{
-width: 54rem; 
-margin: -15rem auto 0;
 
+/* =======================
+   Layout
+======================= */
+
+.main-container {
+  width: 40rem;
+  margin: -15rem auto 0;
 }
-/*////////////*/
+
+/* =======================
+   Add Todo
+======================= */
+
 .add-todo {
   background-color: #fff;
   border-radius: 0.5rem;
@@ -80,6 +102,21 @@ margin: -15rem auto 0;
   align-items: center;
 }
 
+/* =======================
+   Todo Input
+======================= */
+
+#todo-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1.6rem;
+  background: transparent;
+}
+
+/* =======================
+   Todo List
+======================= */
 
 .todo-item {
   background-color: #fff;
@@ -87,11 +124,9 @@ margin: -15rem auto 0;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
 
   padding: 1.5rem;
-
   display: flex;
   align-items: center;
   gap: 12px;
-
   margin-top: 2rem;
 }
 
@@ -109,11 +144,104 @@ margin: -15rem auto 0;
 .todo-item button {
   cursor: pointer;
 }
-/*-----------------------------------------*/
-/* خط ال checkbox*/
-
-
-.completed label{
+.todo-item button:hover {
+  transform: scale(1.2);
+}
+.todo-item.completed label {
   text-decoration: line-through;
   color: #999;
 }
+#theme-toggle:hover {
+  transform: rotate(15deg) scale(1.1);
+}/* =======================
+   Todo Filters
+======================= */
+
+.todo-filters {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+
+  padding: 1.2rem 1.5rem;
+  margin-top: 2rem;
+
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.todo-filters button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: #777;
+}
+.todo-filters button:hover {
+  color: hsl(220, 98%, 61%);
+}
+/* =======================
+   Dark Mode (FIXED)
+======================= */
+
+body.dark {
+  background-color: #121212;
+  color: #eaeaea;
+}
+
+/* cards background fix */
+body.dark .add-todo,
+body.dark .todo-item,
+body.dark .todo-filters {
+  background-color: #25273c;
+}
+
+/* input */
+body.dark #todo-input {
+  color: white;
+}
+
+body.dark #todo-input::placeholder {
+  color: #b3b3b3;
+}
+
+/* todo text */
+body.dark .todo-item label {
+  color: #eaeaea;
+}
+
+/* filters buttons */
+body.dark .todo-filters button {
+  color: #aaa;
+}
+body.dark .todo-item.completed label {
+  text-decoration: line-through;
+  color: #8b8fa3;
+  opacity: 0.8;
+}
+body.dark .todo-item button {
+  color: white;
+  fill: white;
+}
+#theme-toggle{
+  cursor: pointer;
+
+}
+body.dark .todo-filters button:hover {
+  color: hsl(220, 98%, 61%);
+}/* =======================
+   Responsive (future)
+======================= */
+
+
+
+  @media (max-width: 767px) {
+  .main-container,
+  .header-content {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  
+  }
+
+  }
