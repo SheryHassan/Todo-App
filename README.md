@@ -1,6 +1,6 @@
 # 📝 Todo App
 
-Simple Todo List web app built with HTML, CSS, and JavaScript.
+Simple and responsive Todo List web application built using HTML, CSS, and JavaScript.
 
 ---
 
@@ -10,6 +10,7 @@ Simple Todo List web app built with HTML, CSS, and JavaScript.
 * Mark tasks as completed
 * Filter tasks (All / Active / Completed)
 * Data saved in Local Storage
+* Fully responsive design for all screen sizes 📱💻
 
 ---
 
